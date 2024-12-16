@@ -21,5 +21,11 @@
 go.work
 go.work.sum
 
-# env file
-.env
+# IDE files
+.idea
+.vscode
+.dat
+# Build files
+bin
+# Output files
+output
