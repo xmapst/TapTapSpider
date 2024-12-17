@@ -6,10 +6,14 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 )
 
 func (s *SSpider) getXUA() error {
-	resp, err := s.client.R().Get("/top/download?os=android")
+	resp, err := s.client.R().
+		SetRetryCount(-1).
+		SetRetryBackoffInterval(1*time.Second, 5*time.Second).
+		Get("/top/download?os=android")
 	if err != nil {
 		log.Println("ERROR", err)
 		return err
@@ -21,7 +25,10 @@ func (s *SSpider) getXUA() error {
 		return fmt.Errorf("get x-ua failed")
 	}
 
-	resp, err = s.client.R().Get("/top/download?os=ios")
+	resp, err = s.client.R().
+		SetRetryCount(-1).
+		SetRetryBackoffInterval(1*time.Second, 5*time.Second).
+		Get("/top/download?os=ios")
 	if err != nil {
 		log.Println("ERROR", err)
 		return err

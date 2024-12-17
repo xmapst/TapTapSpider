@@ -3,12 +3,16 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/tidwall/gjson"
 )
 
 func (s *SSpider) getTerms() error {
-	resp, err := s.client.R().Get(fmt.Sprintf("/webapiv2/top/v3/terms?X-UA=%s", s.androidXUA))
+	resp, err := s.client.R().
+		SetRetryCount(-1).
+		SetRetryBackoffInterval(1*time.Second, 5*time.Second).
+		Get(fmt.Sprintf("/webapiv2/top/v3/terms?X-UA=%s", s.androidXUA))
 	if err != nil {
 		log.Println("ERROR", err)
 		return err
@@ -23,7 +27,10 @@ func (s *SSpider) getTerms() error {
 		s.terms["android_"+v.Get("label").String()] = v.Get("url").String()
 	}
 
-	resp, err = s.client.R().Get(fmt.Sprintf("/webapiv2/top/v3/terms?X-UA=%s", s.iosXUA))
+	resp, err = s.client.R().
+		SetRetryCount(-1).
+		SetRetryBackoffInterval(1*time.Second, 5*time.Second).
+		Get(fmt.Sprintf("/webapiv2/top/v3/terms?X-UA=%s", s.iosXUA))
 	if err != nil {
 		log.Println("ERROR", err)
 		return err
