@@ -32,6 +32,7 @@ func NewSpider() *SSpider {
 			EnableHTTP3().
 			//EnableDebugLog().
 			ImpersonateChrome().
+			SetTLSFingerprintChrome().
 			SetBaseURL("https://www.taptap.cn/").
 			SetCommonHeaders(map[string]string{
 				"Accept-Encoding": "identity",
