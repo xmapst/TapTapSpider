@@ -75,6 +75,7 @@ func (s *SSpider) worker(name, args string) {
 	defer func(file *os.File) {
 		_ = file.Close()
 	}(file)
+	// Write BOM for UTF-8 encoding
 	_, _ = file.WriteString("\xEF\xBB\xBF")
 	w := csv.NewWriter(file)
 	defer w.Flush()
